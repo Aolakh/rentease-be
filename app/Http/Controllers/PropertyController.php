@@ -14,16 +14,19 @@ class PropertyController extends Controller
     }
 
     public function store(Request $request){
-
+//         echo"<pre>";
+//         print_r($request->all());
+//         echo"</pre>";
+// die;
         $property = new Property();
         $property->title = $request->get('title');
-        $property->rent = $request->get('rent');
+        $property->rent = (int) $request->get('rent');
         $property->size = $request->get('size');
         $property->location = $request->get('location');
         $property->status = $request->get('status');
         $property->contact_information = [
-            'owner_name' => $request->input('owner_name'),
-            'owner_phone' => $request->input('owner_phone'),
+            'owner_name' => $request->input('contact_information.owner_name'),
+            'owner_phone' => $request->input('contact_information.owner_phone'),
         ];
         
         $property->save();
