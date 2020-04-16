@@ -15,8 +15,8 @@ Route::any('/', function () {
     return view('welcome');
 });
 
-Route::get('/get_property','PropertyController@index');
-Route::get('/find_property','PropertyController@findProperty');
+Route::get('/property','PropertyController@index');
+Route::get('/property/search','PropertyController@findProperty');
 
 
-Route::post('/add_property','PropertyController@store');
+Route::post('/property/add','PropertyController@store');
