@@ -8,16 +8,10 @@ class PropertyController extends Controller
 {
     public function index(){
         $properties = Property::all()->toJSON();
-        echo"<pre>";
         print_r($properties);
-        echo"</pre>";
     }
 
     public function store(Request $request){
-//         echo"<pre>";
-//         print_r($request->all());
-//         echo"</pre>";
-// die;
         $property = new Property();
         $property->title = $request->get('title');
         $property->rent = (int) $request->get('rent');
