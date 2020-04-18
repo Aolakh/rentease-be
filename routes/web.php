@@ -16,7 +16,5 @@ Route::any('/', function () {
 });
 
 Route::get('/property','PropertyController@index');
-Route::get('/property/search','PropertyController@findProperty');
-
-
+Route::get('/property/search','PropertyController@search');
 Route::post('/property/add','PropertyController@store');
