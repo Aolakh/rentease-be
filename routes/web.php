@@ -15,6 +15,11 @@ Route::any('/', function () {
     return view('welcome');
 });
 
-Route::get('/property','PropertyController@index');
-Route::get('/property/search','PropertyController@search');
-Route::post('/property/add','PropertyController@store');
+Route::group(['middleware' => 'cors'], function () {
+    Route::get('/property','PropertyController@index');
+    Route::get('/property/search','PropertyController@search');
+    Route::post('/property/add','PropertyController@store');
+
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+});
