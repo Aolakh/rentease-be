@@ -23,3 +23,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
 });
+
+Route::group(['middleware' =>  ['cors' , 'auth.jwt'] ], function () {
+    Route::post('/property/add','PropertyController@store');
+});
