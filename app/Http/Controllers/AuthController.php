@@ -20,7 +20,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->json()->all(),[
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|max:12|unique:users',
             'password' => 'required|string|min:5',
         ]);
 
@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->json()->get('name'),
-            'email' => $request->json()->get('email'),
+            'phone' => $request->json()->get('phone'),
             'password' => Hash::make($request->json()->get('password'))
         ]);
 

@@ -24,7 +24,7 @@ class User extends Eloquent implements JWTSubject,AuthenticatableContract
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'phone', 'password',
     ];
 
     /**
