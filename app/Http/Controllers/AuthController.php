@@ -34,7 +34,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->json()->get('password'))
         ]);
 
-        $token = JWTAuth::fromUser($user);
+        //$token = JWTAuth::fromUser($user);
 
         return response()->json(compact('user'), 201);
     }
@@ -45,10 +45,10 @@ class AuthController extends Controller
 
         try{
             if(! $token  = JWTAuth::attempt($credentials)){
-                return response()->json(['error','invalid_credentials'], 400);
+                return response()->json(['invalid_credentials'], 400);
             }
         } catch (JWTException $e){
-            return response()->json(['error','could_not_create_token'], 500);
+            return response()->json(['could_not_create_token'], 500);
         }
 
         return response()->json(compact('token'));

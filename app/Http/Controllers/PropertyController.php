@@ -4,6 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Property;
+
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
+use Tymon\JWTAuth\Exceptions\JWTExceptions;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\PayloadFactory;
+use Tymon\JWTAuth\JWTManager as JWT;
+
 class PropertyController extends Controller
 {
     public function index(){
@@ -11,18 +19,22 @@ class PropertyController extends Controller
     }
 
     public function store(Request $request){
-        $property = new Property();
-        $property->title = $request->get('title');
-        $property->rent = (int) $request->get('rent');
-        $property->size = $request->get('size');
-        $property->location = $request->get('location');
-        $property->occupancy_status = $request->get('occupancy_status');
-        $property->contact_information = [
-            'owner_name' => $request->input('contact_information.owner_name'),
-            'owner_phone' => $request->input('contact_information.owner_phone'),
-        ];
-        $property->save();
-        return response()->json($property);
+        $user = JWTAuth::parseToken()->authenticate()->toArray();
+        if(!empty($user)){
+            $property = new Property();
+            $property->title = $request->get('title');
+            $property->rent = (int) $request->get('rent');
+            $property->size = $request->get('size');
+            $property->location = $request->get('location');
+            $property->occupancy_status = $request->get('occupancy_status');
+            $property->contact_information = [
+                'owner_name' => $user['name'],
+                'owner_phone' => $user['phone'],
+            ];
+            $property->save();
+            return response()->json($property);
+        }
+        return response()->json(['user_not_found'], 400);
     }
 
     public function search(Request $request){
