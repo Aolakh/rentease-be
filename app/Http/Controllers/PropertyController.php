@@ -28,9 +28,12 @@ class PropertyController extends Controller
             $property->location = $request->get('location');
             $property->occupancy_status = $request->get('occupancy_status');
             $property->contact_information = [
-                'owner_name' => $user['name'],
-                'owner_phone' => $user['phone'],
+                "id" => $user['_id'],
+                "name" => $request->input('contact_information.owner_name'),
+                "phone" => $request->input('contact_information.owner_phone'),
             ];
+            // print_r($property->toArray());
+            // die;
             $property->save();
             return response()->json($property);
         }
@@ -39,14 +42,23 @@ class PropertyController extends Controller
 
     public function search(Request $request){
         $property = Property::query();
-        if($request->has('loc'))
+
+
+        if($request->has('loc') && !empty($request->input('loc')))
             $property->Where('location', 'like', '%' . $request->input('loc') . '%');
-        if($request->has('minp'))
+
+        if($request->has('minp') && !empty($request->input('minp')))
             $property->where('rent','>=', (int) $request->input('minp'));
-        if($request->has('maxp'))
+
+        if($request->has('maxp') && !empty($request->input('maxp')))
             $property->where('rent','<=', (int) $request->input('maxp'));
-        if($request->has('oc_status'))
+
+        if($request->has('oc_status') && !empty($request->input('oc_status')))
             $property->where('occupancy_status', $request->input('oc_status'));
+
+        if($request->has('size') && !empty($request->input('size')))
+            $property->where('size', (int) $request->input('size'));
+
         $result = $property->get();
         return $result->toJSON();
     }

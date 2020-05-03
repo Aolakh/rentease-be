@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
@@ -50,7 +51,7 @@ class AuthController extends Controller
         } catch (JWTException $e){
             return response()->json(['could_not_create_token'], 500);
         }
-
-        return response()->json(compact('token'));
+        $user = Auth::user()->toArray();
+        return response()->json(compact('token','user'));
     }
 }
