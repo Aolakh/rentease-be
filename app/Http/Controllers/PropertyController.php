@@ -42,7 +42,7 @@ class PropertyController extends Controller
             $property->location = $request->get('location');
             $property->occupancy_status = 'available';
             $property->contact_information = [
-                "id" => $user['_id'],
+                "_id" => $user['_id'],
                 "name" => $request->input('contact_information.owner_name'),
                 "phone" => $request->input('contact_information.owner_phone'),
             ];
