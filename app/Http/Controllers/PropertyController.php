@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Property;
+use Illuminate\Support\Facades\Validator;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
@@ -21,19 +22,30 @@ class PropertyController extends Controller
     public function store(Request $request){
         $user = JWTAuth::parseToken()->authenticate()->toArray();
         if(!empty($user)){
+
+            $validator = Validator::make($request->json()->all(),[
+                'title' => 'required|string|max:255|min:5',
+                'rent' => 'required|integer',
+                'size' => 'required|integer',
+                'location' => 'required|string|max:255|min:7',
+                'contact_information.owner_name' => 'required|string|max:255',
+                'contact_information.owner_phone' => 'required|string|max:255',
+            ]);
+    
+            if($validator->fails()){
+                return response()->json($validator->errors(),400);
+            }
             $property = new Property();
             $property->title = $request->get('title');
             $property->rent = (int) $request->get('rent');
             $property->size = $request->get('size');
             $property->location = $request->get('location');
-            $property->occupancy_status = $request->get('occupancy_status');
+            $property->occupancy_status = 'available';
             $property->contact_information = [
                 "id" => $user['_id'],
                 "name" => $request->input('contact_information.owner_name'),
                 "phone" => $request->input('contact_information.owner_phone'),
             ];
-            // print_r($property->toArray());
-            // die;
             $property->save();
             return response()->json($property);
         }
