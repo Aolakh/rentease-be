@@ -38,7 +38,7 @@ class PropertyController extends Controller
             $property = new Property();
             $property->title = $request->get('title');
             $property->rent = (int) $request->get('rent');
-            $property->size = $request->get('size');
+            $property->size = (int) $request->get('size');
             $property->location = $request->get('location');
             $property->occupancy_status = 'available';
             $property->contact_information = [
