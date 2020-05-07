@@ -22,6 +22,9 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
+
+    Route::get('/location/search','LocationController@searchLocations');
+    // Route::get('/location/search','PropertyController@searchLocations');
 });
 
 Route::group(['middleware' =>  ['cors' , 'auth.jwt'] ], function () {
